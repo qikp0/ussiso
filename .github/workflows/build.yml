@@ -32,10 +32,11 @@ jobs:
             
       - name: Hash
         run: |
-          cd imageout
-          sha256sum boot.iso > ../hash.txt
+          cd imageout/images
+          sha256sum boot.iso > ../../hash.txt
+          cd ../..
       - name: Export signing key
-        run: echo "${{secrets.PRIVATE_KEY}}" | base64 -d > key.gpg
+        run: echo "${{secrets.PRIVATE_KEY}}" | base64 -d | gpg --import
       - run: gpg --clearsign hash.txt
       
       - uses: actions/upload-artifact@v7
@@ -45,4 +46,4 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: "${{matrix.version}}-iso"
-          path: imageout/boot.iso
+          path: imageout/images/boot.iso
