@@ -20,13 +20,16 @@ jobs:
       options: "--privileged --device=/dev/loop-control"
       
     steps:
+      - run: dnf install git-core lorax gpg -y
+      
       - uses: actions/checkout@v6
-      - run: dnf install lorax gpg -y
+      
       - name: Build image
         run: |
           lorax -p "CentOS Stream" -v "${{matrix.version}}" -r "0" imageout \
             -s "https://mirror.stream.centos.org/${{matrix.version}}-stream/BaseOS/x86_64/os/" \
             -s "https://mirror.stream.centos.org/${{matrix.version}}-stream/AppStream/x86_64/os/"
+            
       - name: Hash
         run: |
           cd imageout
@@ -34,6 +37,7 @@ jobs:
       - name: Export signing key
         run: echo "${{secrets.PRIVATE_KEY}}" | base64 -d > key.gpg
       - run: gpg --clearsign hash.txt
+      
       - uses: actions/upload-artifact@v7
         with:
           name: "${{matrix.version}}-hash"
