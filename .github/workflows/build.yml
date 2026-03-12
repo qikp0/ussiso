@@ -1,0 +1,44 @@
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 3"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        version:
+          - "9"
+          - "10"
+
+    runs-on: ubuntu-24.04
+    container:
+      image: "quay.io/centos/centos:stream${{matrix.version}}"
+      options: "--privileged --device=/dev/loop-control"
+      
+    steps:
+      - uses: actions/checkout@v6
+      - run: dnf install lorax gpg -y
+      - name: Build image
+        run: |
+          lorax -p "CentOS Stream" -v "${{matrix.version}}" -r "0" imageout \
+            -s "https://mirror.stream.centos.org/${{matrix.version}}-stream/BaseOS/x86_64/os/" \
+            -s "https://mirror.stream.centos.org/${{matrix.version}}-stream/AppStream/x86_64/os/"
+      - name: Hash
+        run: |
+          cd imageout
+          sha256sum boot.iso > ../hash.txt
+      - name: Export signing key
+        run: echo "${{secrets.PRIVATE_KEY}}" | base64 -d > key.gpg
+      - run: gpg --clearsign hash.txt
+      - uses: actions/upload-artifact@v7
+        with:
+          name: "${{matrix.version}}-hash"
+          path: hash.txt.asc
+      - uses: actions/upload-artifact@v7
+        with:
+          name: "${{matrix.version}}-iso"
+          path: imageout/boot.iso
