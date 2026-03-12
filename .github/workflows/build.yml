@@ -35,7 +35,7 @@ jobs:
           cd imageout/images
           sha256sum boot.iso > ../../hash.txt
           cd ../..
-      - name: Export signing key
+      - name: Import signing key
         run: echo "${{secrets.PRIVATE_KEY}}" | base64 -d | gpg --import
       - run: gpg --clearsign hash.txt
       
