@@ -37,6 +37,8 @@ Then verify the hash itself:
 sha256sum -c hash.txt.asc
 ```
 
+It should say `OK`.
+
 ## Why?
 
 CentOS doesn't sign their ISO images anymore, this project offers separate infrastructure that signs the ISO image.
