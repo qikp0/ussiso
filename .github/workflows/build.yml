@@ -26,7 +26,10 @@ jobs:
       
       - name: Build image
         run: |
-          lorax -p "CentOS Stream" -v "${{matrix.version}}" -r "0" imageout \
+          lorax -p "CentOS Stream" -v "${{matrix.version}}" -r "0" \
+            --isfinal \
+            --noverify=False \
+            imageout \
             -s "https://mirror.stream.centos.org/${{matrix.version}}-stream/BaseOS/x86_64/os/" \
             -s "https://mirror.stream.centos.org/${{matrix.version}}-stream/AppStream/x86_64/os/"
             
