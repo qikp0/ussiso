@@ -1,5 +1,8 @@
 # :lock: ussiso
 
+> [!NOTE]
+> While this project can provide protections against malicious actors using a supply chain attack to upload fake ISO images on the CentOS Stream mirrors, this project cannot and does not provide protection if the underlying packages were infected too.
+
 ussiso is a project that provides unofficial, signed, CentOS Stream ISO images. The images have no modifications made.
 
 It stands for:
