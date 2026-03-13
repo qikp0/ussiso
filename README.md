@@ -1,4 +1,4 @@
-# 🔒 ussiso
+# :lock: ussiso
 
 ussiso is a project that provides unofficial, signed, CentOS Stream ISO images. The images have no modifications made.
 
