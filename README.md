@@ -1,6 +1,6 @@
-# ussiso
+# 🔒 ussiso
 
-ussiso is a project that provides unofficial, signed, CentOS Stream ISO images.
+ussiso is a project that provides unofficial, signed, CentOS Stream ISO images. The images have no modifications made.
 
 It stands for:
 
